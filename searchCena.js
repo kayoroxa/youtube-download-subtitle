@@ -17,7 +17,7 @@ async function loopFilesSrt(dirPath, searchTerm) {
     searchCenaInFiles(path.join(dirPath, file), searchTerm)
   )
   const results = await Promise.all(promises)
-  console.log('Cenas com ', searchTerm)
+  console.log('Cenas com: ', searchTerm)
   console.log(
     _.sortBy(
       results.filter(v => v !== null),
@@ -34,8 +34,10 @@ async function searchCenaInFiles(filePath, searchTerm) {
     .map(v => ({ ...v, text: v.text.replace(/\n/g, ' ') }))
 
   const srt = {
-    linesHasLiteral: filter(dataSrt, v =>
-      v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+    linesHasLiteral: filter(
+      dataSrt,
+      v => v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+      // v.text.endsWith(searchTerm)
     ),
     linesHasWords: filter(dataSrt, v => {
       return searchTerm.split(' ').every(search => {
@@ -70,8 +72,12 @@ async function searchCenaInFiles(filePath, searchTerm) {
     frase:
       putEmoticon(srt.linesHasLiteral?.[0]?.text, 'azul') ||
       putEmoticon(srt.linesHasWords?.[0]?.text, 'yellow'),
+    file: filePath.replace(/srt\\|.srt/gi, ''),
   }))[0]
 }
+
+//F:\MAIN\JOB\vscode\others\download lot subtitle youtube\srt\Captain Underpants  The First Epic Movie (2017) - The Origin Story Scene (1 10)   Movieclips.srt
+//f:/MAIN/JOB/vscode/others/download lot subtitle youtube/srt/Captain Underpants  The First Epic Movie (2017) - The Origin Story Scene (1 10)   Movieclips.srt'
 
 function createYoutubeLink(linkYoutube, startTime) {
   const realTime = parseInt(startTime / 1000)
@@ -89,4 +95,4 @@ function putEmoticon(sentence, emoticon) {
   return emoticon === 'azul' ? '🔵 ' + sentence : '🟡 ' + sentence
 }
 
-loopFilesSrt('./srt', `make you have`)
+loopFilesSrt('./srt', `as`)
