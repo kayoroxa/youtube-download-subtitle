@@ -11,7 +11,7 @@ function nameFile(str) {
   return str.replace(/[<>:"/\|?*]/g, ' ')
 }
 
-async function loopFilesSrt(dirPath, searchTerm) {
+async function findSceneWith(dirPath, searchTerm) {
   const files = await readdir(dirPath)
   const promises = files.map(file =>
     searchCenaInFiles(path.join(dirPath, file), searchTerm)
@@ -27,7 +27,10 @@ async function loopFilesSrt(dirPath, searchTerm) {
   return results
 }
 
-async function searchCenaInFiles(filePath, searchTerm) {
+async function searchCenaInFiles(filePath, search) {
+  const isObj = typeof search === 'object'
+  const searchTerm = !isObj ? search : Object.values(search).join(' ')
+
   const srtFile = await fs.readFileSync(filePath, 'utf8')
   const dataSrt = parser
     .fromSrt(srtFile, true)
@@ -36,7 +39,14 @@ async function searchCenaInFiles(filePath, searchTerm) {
   const srt = {
     linesHasLiteral: filter(
       dataSrt,
-      v => v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+      v => {
+        if (isObj) {
+          return Object.keys(search).every(key =>
+            rules[key](v.text, search[key])
+          )
+        }
+        return v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+      }
       // v.text.endsWith(searchTerm)
     ),
     linesHasWords: filter(dataSrt, v => {
@@ -69,10 +79,10 @@ async function searchCenaInFiles(filePath, searchTerm) {
       v.linkYoutube,
       srt.linesHasLiteral?.[0]?.startTime || srt.linesHasWords?.[0]?.startTime
     ),
+    file: filePath.replace(/srt\\|.srt/gi, ''),
     frase:
       putEmoticon(srt.linesHasLiteral?.[0]?.text, 'azul') ||
       putEmoticon(srt.linesHasWords?.[0]?.text, 'yellow'),
-    file: filePath.replace(/srt\\|.srt/gi, ''),
   }))[0]
 }
 
@@ -95,4 +105,22 @@ function putEmoticon(sentence, emoticon) {
   return emoticon === 'azul' ? '🔵 ' + sentence : '🟡 ' + sentence
 }
 
-loopFilesSrt('./srt', `as`)
+const rules = {
+  contains: (text, searchTerm) => {
+    return text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+    return text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+  },
+  endsWith: (text, searchTerm) => {
+    return text.endsWith(searchTerm)
+    return text.match(new RegExp('\\b' + searchTerm + '\\b$', 'gi'))
+  },
+  startsWith: (text, searchTerm) => {
+    return text.match(new RegExp('^\\b' + searchTerm + '\\b', 'gi'))
+    return text.match(new RegExp('^\\b' + searchTerm + '\\b', 'gi'))
+  },
+}
+
+findSceneWith('./srt', {
+  contains: 'i also did',
+  // endsWith: 'to?',
+})
