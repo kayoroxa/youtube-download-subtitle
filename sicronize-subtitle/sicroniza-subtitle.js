@@ -9,14 +9,16 @@ const {
 } = require('./functions')
 
 const dataSrtMovie = readSrt('./movie.srt')
-const dataSrtYoutube = readSrt('./youtube.srt')
+const dataSrtYoutube = readSrt(
+  '../srt/Now You See Me 2 (2016) - So Happy to Be Working With You Scene (4 11)   Movieclips.srt'
+)
 
 const { coringa, bestMatchIndex, search } = findSyncTimeSrtMovie(
   dataSrtYoutube,
   dataSrtMovie
 )
 
-const videoDuration = 308400
+//const videoDuration = 308400
 
 const dataSrtMovieTimeSync = dataSrtMovie.map(v => ({
   ...v,
@@ -25,14 +27,10 @@ const dataSrtMovieTimeSync = dataSrtMovie.map(v => ({
 }))
 
 const dataSrtMovieCut = dataSrtMovieTimeSync
-  .filter(v => v.startTime >= 0 && v.endTime <= videoDuration)
+  .filter(v => v.startTime >= 0)
   .map((v, i) => ({ ...v, id: i + 1 }))
-console.log(dataSrtYoutube[44], dataSrtYoutube[45])
-console.log(coringa, coringa)
-// console.log({ bestMatchIndex, search })
 
-console.log(dataSrtMovieTimeSync[583], dataSrtMovieTimeSync[584])
-
+console.log({ dataSrtMovieTimeSync })
 console.log(dataSrtMovieCut.length)
 
 // exportSrtFile(dataSrtMovieCut, 'movie-cut.srt')

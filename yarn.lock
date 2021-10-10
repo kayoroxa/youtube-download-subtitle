@@ -20,7 +20,15 @@ miniget@^4.0.0:
   resolved "https://registry.yarnpkg.com/miniget/-/miniget-4.2.1.tgz#11a1c24817a059e292378eb9cff4328d9240c665"
   integrity sha512-O/DduzDR6f+oDtVype9S/Qu5hhnx73EDYGyZKwU/qN82lehFZdfhoa4DT51SpsO+8epYrB3gcRmws56ROfTIoQ==
 
-sax@^1.1.3, sax@^1.2.4:
+opensubtitles-api@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/opensubtitles-api/-/opensubtitles-api-5.1.2.tgz#750c9e808fbf6b006225150e062de0876ff41288"
+  integrity sha512-uGc9+/hbi1VkYGwNS0yBEeN9+URQvfZUcX3JtFBYWkwU/cUUVGbgLiI4Sx3SmumKtNoXjYDhJ9SoFTT0jVNOUQ==
+  dependencies:
+    urijs "^1.19.1"
+    xmlrpc "^1.3.2"
+
+sax@1.2.x, sax@^1.1.3, sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
@@ -39,6 +47,24 @@ subtitles-parser@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/subtitles-parser/-/subtitles-parser-0.0.2.tgz#cf2fcc3e397b1c7f831e1365f6b3ce37d3155194"
   integrity sha1-zy/MPjl7HH+DHhNl9rPON9MVUZQ=
+
+urijs@^1.19.1:
+  version "1.19.7"
+  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.7.tgz#4f594e59113928fea63c00ce688fb395b1168ab9"
+  integrity sha512-Id+IKjdU0Hx+7Zx717jwLPsPeUqz7rAtuVBRLLs+qn+J2nf9NGITWVCxcijgYxBqe83C7sqsQPs6H1pyz3x9gA==
+
+xmlbuilder@8.2.x:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-8.2.2.tgz#69248673410b4ba42e1a6136551d2922335aa773"
+  integrity sha1-aSSGc0ELS6QuGmE2VR0pIjNap3M=
+
+xmlrpc@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/xmlrpc/-/xmlrpc-1.3.2.tgz#26b2ea347848d028aac7e7514b5351976de3e83d"
+  integrity sha1-JrLqNHhI0Ciqx+dRS1NRl23j6D0=
+  dependencies:
+    sax "1.2.x"
+    xmlbuilder "8.2.x"
 
 ytdl-core@^4.9.1:
   version "4.9.1"

@@ -6,6 +6,7 @@ const { compareTwoStrings, findBestMatch } = require('string-similarity')
 const makePath = path => joinPath(__dirname, path)
 function readSrt(path) {
   const srtPath = makePath(path)
+  console.log({ srtPath })
   const srtFile = fs.readFileSync(srtPath, 'utf8')
   return parser.fromSrt(srtFile, true)
 }
