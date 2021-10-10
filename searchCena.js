@@ -21,7 +21,7 @@ async function findSceneWith(dirPath, searchTerm) {
   console.log(
     _.sortBy(
       results.filter(v => v !== null),
-      [v => v.frase.includes('🔵')]
+      [v => v?.frase.includes('🔵')]
     ).reverse()
   )
   return results
@@ -106,6 +106,7 @@ function putEmoticon(sentence, emoticon) {
 }
 
 const rules = {
+  have: (text, search) => text.includes(search),
   contains: (text, searchTerm) => {
     return text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
     return text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
@@ -121,6 +122,6 @@ const rules = {
 }
 
 findSceneWith('./srt', {
-  contains: 'i also did',
+  contains: `we don't`,
   // endsWith: 'to?',
 })

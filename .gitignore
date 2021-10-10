@@ -1,2 +1,4 @@
 node_modules
 srt
+*.mp4
+*.srt
