@@ -16,9 +16,10 @@ OpenSubtitles.search({
   query: 'Now You See Me 2 (2016)', // Text-based query, this is not recommended.
   //  gzip: true, // returns url to gzipped subtitles, defaults to false
 }).then(subtitles => {
+  console.log(subtitles)
   // an array of objects, no duplicates (ordered by
   // matching + uploader, with total downloads as fallback)
-  downloadFile(subtitles.en[0].utf8, './movie.srt')
+  // downloadFile(subtitles.en[0].utf8, './movie.srt')
 })
 
 function downloadFile(url, dest) {

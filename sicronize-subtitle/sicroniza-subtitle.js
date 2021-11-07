@@ -8,10 +8,22 @@ const {
   findSyncTimeSrtMovie,
 } = require('./functions')
 
+const config = {
+  timeOfMatchYoutube: 290 * 1000,
+  range: 10 * 1000,
+}
+
 const dataSrtMovie = readSrt('./movie.srt')
+
 const dataSrtYoutube = readSrt(
-  '../srt/Now You See Me 2 (2016) - So Happy to Be Working With You Scene (4 11)   Movieclips.srt'
+  '../srt/HOTEL TRANSYLVANIA 2 All Movie Clips (2015).srt'
+).filter(
+  item =>
+    item.startTime >= config.timeOfMatchYoutube - config.range / 2 &&
+    item.endTime <= config.timeOfMatchYoutube + config.range / 2
 )
+
+console.log(dataSrtYoutube)
 
 const { coringa, bestMatchIndex, search } = findSyncTimeSrtMovie(
   dataSrtYoutube,
@@ -36,7 +48,11 @@ console.log(dataSrtMovieCut.length)
 // exportSrtFile(dataSrtMovieCut, 'movie-cut.srt')
 
 function exportSrtFile(dataSrt, fileName) {
-  const srt = parser.toSrt(dataSrt)
-  fs.writeFileSync(joinPath(__dirname, fileName), srt)
+  // const srtString = parser.toSrt(dataSrt)
+  // fs.writeFileSync(joinPath(__dirname, fileName), srtString)
+  fs.writeFileSync(
+    joinPath(__dirname, fileName),
+    `var videoSrt = ${JSON.stringify(dataSrt, null, 2)}`
+  )
 }
-exportSrtFile(dataSrtMovieCut, 'movie-cut.srt')
+exportSrtFile(dataSrtMovieCut, 'videoSrt.js')

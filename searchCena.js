@@ -11,23 +11,39 @@ function nameFile(str) {
   return str.replace(/[<>:"/\|?*]/g, ' ')
 }
 
-async function findSceneWith(dirPath, searchTerm) {
-  const files = await readdir(dirPath)
-  const promises = files.map(file =>
-    searchCenaInFiles(path.join(dirPath, file), searchTerm)
+async function findSceneWith(dirPath, searchTerm, ignore = []) {
+  const files = (await readdir(dirPath)).filter(v =>
+    ignore.every(i => !v.toLowerCase().includes(i.toLowerCase()))
   )
-  const results = await Promise.all(promises)
+  // const promises = files.map(file =>
+  //   searchCenaInFiles(path.join(dirPath, file), searchTerm)
+  // )
+  console.log('procurando...')
   console.log('Cenas com: ', searchTerm)
-  console.log(
-    _.sortBy(
-      results.filter(v => v !== null),
-      [v => v?.frase.includes('🔵')]
-    ).reverse()
-  )
-  return results
+  const results = []
+  for (const file of files) {
+    if (results.length > 50) break
+    const result = await searchSentenceInFile(
+      path.join(dirPath, file),
+      searchTerm
+    )
+
+    if (result) {
+      console.log(result)
+      results.push(result)
+    }
+  }
+
+  // console.log(
+  //   _.sortBy(
+  //     results.filter(v => v !== null),
+  //     [v => v?.frase.includes('🔵')]
+  //   ).reverse()
+  // )
+  return '' //results
 }
 
-async function searchCenaInFiles(filePath, search) {
+async function searchSentenceInFile(filePath, search) {
   const isObj = typeof search === 'object'
   const searchTerm = !isObj ? search : Object.values(search).join(' ')
 
@@ -67,6 +83,19 @@ async function searchCenaInFiles(filePath, search) {
   const videoSrtFromName = videosWithSubtitle.filter(v => {
     return nameFile(v.title) === filePath.replace(/srt\\|.srt/gi, '')
   })
+
+  if (!videoSrtFromName.length) {
+    return [
+      {
+        title: filePath.replace(/srt\\|.srt/gi, ''),
+        startTime: srt.linesHasLiteral?.[0]?.startTime,
+        frase:
+          putEmoticon(srt.linesHasLiteral?.[0]?.text, 'azul') ||
+          putEmoticon(srt.linesHasWords?.[0]?.text, 'yellow'),
+      },
+    ]
+  }
+
   // console.log(
   //   videoSubData.map(v => ({
   //     ...v,
@@ -121,7 +150,12 @@ const rules = {
   },
 }
 
-findSceneWith('./srt', {
-  contains: `we don't`,
-  // endsWith: 'to?',
-})
+findSceneWith(
+  // './netflix srt',
+  './srt',
+  {
+    contains: `no matter what`,
+    // endsWith: 'to?',
+  },
+  ['AVENGERS', 'venom']
+)
