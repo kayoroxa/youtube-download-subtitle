@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "brain.js": "^2.0.0-beta.4",
     "lodash": "^4.17.21",
     "opensubtitles-api": "^5.1.2",
     "readline-sync": "^1.4.10",

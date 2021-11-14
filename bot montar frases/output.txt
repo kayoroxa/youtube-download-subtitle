@@ -1,87 +1,126 @@
-should these same dog see ___?
-where should one of them see ___?
-should my mom say ___?
-should these same dog say ___?
-should {p1 see ___?
-should one of them say ___?
-should {p1 eat ___?
-what shouldn't one of them be ___?
-why shouldn't {p1 do ___?
-when shouldn't {p1 do ___?
-she would have been safe
-these same dog would have been dead
-she would have been big
-i would have been safe
-she would have been dead
-these same dog would have been tall
-one of them would have been nice
-we would have been tall
+when shouldn't i see ___?
+should we eat ___?
+where shouldn't it see ___?
+when should we see ___?
+what shouldn't my mom eat ___?
+should these same dog do ___?
+should they be ___?
+shouldn't my mom be ___?
+when should one of them be ___?
+why should my mom eat ___?
+one of them would have been safe
+one of them would have been big
+it would have been safe
+my mom would have been short
+my mom would have been important
+i would have been short
+my mom would have been nice
+he would have been long
+these same dog would have been long
+he may have been tall
+i may have been safe
+my mom may have been long
+you may have been tall
+my mom may have been safe
+they may have been big
+these same dog may have been important
+they may have been important
+they may have been tall
 one of them may have been nice
-you may have been safe
-he may have been safe
-one of them may have been dead
-one of them may have been safe
-my mom may have been dead
-my mom may have been nice
-it just wish my mom could have ___
-it just wish i could have ___
-my mom just wish him could do ___
-one of them just wish him could have ___
-these same dog just wish i could be ___
-one of them just wish these same dog could do ___
-you just wish her could have ___
-these same dog just wish them could be ___
-one of them just wish you could be ___
-he just wish them could say ___
-these same dog will say a lot of more than us
-one of them will be a lot of more than these same dog
-it will eat a lot of more than one of them
-you will be a lot of more than these same dog
-my mom will eat a lot of more than one of them
-he will be a lot of more than you
-one of them will see a lot of more than these same dog
-it will see a lot of more than you
-one of them think these same dog will do
-she think these same dog have
-he think my mom will be
-one of them think it do
-we think one of them see
-we think these same dog eat
-these same dog think one of them do
-it think i see
-my mom think i will do
-my mom think he will see
-these same dog think you has ____
-these same dog think you already has ____
-my mom think she has ____
-i think i already ____
-these same dog think one of them already ____
-he think i  ____
-i think these same dog  ____
-we think he already ____
-we think they already has ____
-one of them think one of them  ____
-so far as she be ___
-so far as he be ___
-so far as we see ___
-so far as we eat ___
-so far as you be ___
-so far as you see ___
-so far as she do ___
-so far as you eat ___
-so far as it do ___
-as far as they am concerned
+these same dog just wish these same dog could be ___
+one of them just wish i could see ___
+one of them just wish these same dog could say ___
+my mom just wish i could see ___
+we just wish them could eat ___
+one of them just wish one of them could see ___
+he just wish one of them could do ___
+it just wish us could be ___
+these same dog just wish him could do ___
+my mom just wish it could see ___
+these same dog will eat a lot of more than him
+one of them will say a lot of more than these same dog
+my mom will be a lot of more than her
+these same dog will say a lot of more than my mom
+these same dog will do a lot of more than one of them
+one of them will have a lot of more than these same dog
+you will do a lot of more than my mom
+one of them will say a lot of more than us
+one of them will be a lot of more than it
+{c they think one of them will say
+{c she think he see
+{c these same dog think one of them see
+?} we think these same dog will have
+?} he think my mom will see
+?} my mom think they will see
+?} we think one of them say
+?} we think one of them will see
+?} one of them think one of them be
+?} you think it will do
+{c my mom think one of them will already ____
+?} he think she will have ____
+?} it think she already  ____
+?} one of them think one of them will have ____
+?} he think we   ____
+?} we think one of them will  ____
+{c my mom think my mom will already ____
+{c he think one of them already has ____
+{c you think she already has ____
+{c she think he will already ____
+so far as i see
+so far as i eat
+so far as we say
+so far as they have
+so far as they do
+so far as i say
+so far as we be
+so far as you have
+so far as he say
+as far as she am concerned
 as far as we am concerned
 as far as you am concerned
+as far as i am concerned
+as far as they am concerned
 as far as he am concerned
-as far as she am concerned
-nothing is as small as her guitar
-nothing is as big as your guitar
-nothing is as long as its son
-nothing is as weak as her house
-nothing is as small as my house
-nothing is as tall as his son
-nothing is as weak as his guitar
-nothing is as long as its house
-nothing is as important as their guitar
-nothing is as short as your guitar
+nothing is as short as its son
+nothing is as short as our house
+nothing is as weak as our daughter
+nothing is as weak as your house
+nothing is as short as its house
+nothing is as big as our guitar
+nothing is as important as our house
+nothing is as important as your house
+nothing is as important as my daughter
+nothing is as tall as her son
+you mind if it eat ____
+would we mind if they say ____
+c it mind if you see ____
+it mind if i have ____
+he mind if they have ____
+i mind if we see ____
+you mind if we be ____
+c he mind if he do ____
+we mind if he be ____
+we mind if it have ____
+why {c} they {v}?
+what {c} he {v}?
+what {c} we {v}?
+where {c} she {v}?
+when {c} it {v}?
+when {c} i {v}?
+where {c} i {v}?
+have we ever {v3}?
+have he ever {v3}?
+have i ever {v3}?
+haven't it ever {v3}?
+have they ever {v3}?
+haven't they ever {v3}?
+haven't he ever {v3}?
+just when i thought you ____
+just when it thought you ____
+just when he thought they ____
+just when it thought it ____
+just when i thought we ____
+just when it thought she ____
+just when you thought we ____
+just when he thought it ____
+just when you thought it ____

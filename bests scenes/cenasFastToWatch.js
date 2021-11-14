@@ -29,17 +29,24 @@ function readAllSrtFiles(filesName) {
 }
 const all = allSrtInFolder('../srt')
 const srtFiles = readAllSrtFiles(all)
-// console.log(srtFiles)
 
-const filterSrtFiles = srtFiles.map(v => {
-  const allFrases = v.content.map(v => v.text)
-  let num = 0
-  let sem = 0
-  allFrases.forEach(v => {
-    const wordsInFrase = v.split(' ')
-    wordsInFrase.forEach(v => (words.indexOf(v) > -1 ? num++ : sem++))
+const filterSrtFiles = srtFiles.map(fileData => {
+  const dataSrt = fileData.content
+  // const allFrases = content.map(v => v.text)
+  let time = 0
+  let wordsCount = 0
+  let frasesCount = 0
+  dataSrt.forEach(fraseSrtData => {
+    const timeDiference = fraseSrtData.endTime - fraseSrtData.startTime
+    const timeDiferenceSeconds = timeDiference / 1000
+    const frase = fraseSrtData.text.replace(/\[.*\]/g, '')
+    const fraseWordsCount = frase.split(' ').length
+    const timeByWord = timeDiferenceSeconds / fraseWordsCount
+    time += timeByWord
+    wordsCount += fraseWordsCount
+    frasesCount++
   })
-  return { name: v.name, num, sem, score: (num * 100) / (sem + num) }
+  return { name: fileData.name, score: time / wordsCount, frasesCount }
 })
 
 const sorted = filterSrtFiles.sort((a, b) => b.score - a.score).reverse()

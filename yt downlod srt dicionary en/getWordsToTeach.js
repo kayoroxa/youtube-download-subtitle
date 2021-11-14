@@ -14,12 +14,12 @@ function allSrtInFolder(folder) {
   return srtFiles
 }
 
-function readAllSrtFiles(filesName) {
+function readAllSrtFiles(filesName, folder) {
   const srtFiles = [{ name: '', content: '' }]
 
   filesName.forEach(function (file) {
     const fileContent = fs.readFileSync(
-      joinPath(__dirname, '../srt', file),
+      joinPath(__dirname, folder, file),
       'utf8'
     )
     const dataSrt = parser.fromSrt(fileContent, true)
@@ -27,21 +27,21 @@ function readAllSrtFiles(filesName) {
   })
   return srtFiles.filter(v => v.content.length > 0)
 }
-const all = allSrtInFolder('../srt')
-const srtFiles = readAllSrtFiles(all)
-// console.log(srtFiles)
+const all = allSrtInFolder('./srt videos learning eng')
+const srtFiles = readAllSrtFiles(all, './srt videos learning eng')
+const srtCena = ''
 
-const filterSrtFiles = srtFiles.map(v => {
-  const allFrases = v.content.map(v => v.text)
-  let num = 0
-  let sem = 0
-  allFrases.forEach(v => {
-    const wordsInFrase = v.split(' ')
-    wordsInFrase.forEach(v => (words.indexOf(v) > -1 ? num++ : sem++))
+//take sentences in SrtFiles that are in srtCena
+function getWordsToTeach(srtCena) {
+  const wordsToTeach = []
+  srtFiles.forEach(function (srtFile) {
+    srtFile.content.forEach(function (sentence) {
+      if (srtCena.indexOf(sentence.text) > -1) {
+        wordsToTeach.push(sentence.text)
+      }
+    })
   })
-  return { name: v.name, num, sem, score: (num * 100) / (sem + num) }
-})
+  return wordsToTeach
+}
 
-const sorted = filterSrtFiles.sort((a, b) => b.score - a.score).reverse()
-console.log(sorted)
-// console.log(readAllSrtFiles()[0])
+getWordsToTeach(srtCena)

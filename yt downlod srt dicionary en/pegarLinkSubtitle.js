@@ -1,11 +1,4 @@
-document.querySelector('#copy').remove()
-let urls = [...document.querySelectorAll('a#thumbnail')].map(
-  v => 'https://www.youtube.com' + v.getAttribute('href')?.replace(/&.*/g, '')
-)
-
-copy(urls)
-
-const links = [
+const filmes = [
   'https://www.youtube.comundefined',
   'https://www.youtube.com/watch?v=ujk3aySA6Ss',
   'https://www.youtube.com/watch?v=R4r5efBv9FQ',
@@ -588,3 +581,83 @@ const links = [
   'https://www.youtube.com/watch?v=8xOSWTNShS8',
   'https://www.youtube.com/watch?v=1YQWr0VRp3g',
 ]
+
+const op = link => {
+  return {
+    headers: {
+      accept: 'application/json, text/plain, */*',
+      'accept-language': 'en,pt-BR;q=0.9,pt;q=0.8,en-US;q=0.7',
+      'content-type': 'application/json; charset=UTF-8',
+      'sec-ch-ua':
+        '"Google Chrome";v="93", " Not;A Brand";v="99", "Chromium";v="93"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Windows"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'x-auth-token':
+        '1JqonNenw9WSm9Sfm5ZsymrDkpqZnmSZyGfHmsZom5OOkJy0spaphNuOrIPUfLm1s4q3i8Gxdrp9',
+      'x-requested-domain': 'savesubs.com',
+      'x-requested-with': 'xmlhttprequest',
+      cookie:
+        '_ga=GA1.2.1277732324.1631738455; _gid=GA1.2.920781546.1631933267; _gat=1; __cf_bm=53d22390045a9e68361ca28e7a89a75eea3b7b21-1631934440-0-AY+jvGSDAERnEG9Lxtyr8IzpFwgdTjnJnZh7d+XCkgTvcBoYSdtCG3geO9R0XgyPDfB2c+TUnJTTVkkHjXYfaYDvLMP7etRunAxgpjLVz7JJIZswEnJFmSliAf9gvcSuPg==',
+    },
+    referrer:
+      'https://savesubs.com/process?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DAXGmvZRig88',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: `{"data":{"url":"${link}"}}`,
+    method: 'POST',
+    mode: 'cors',
+  }
+}
+const getRep = json => {
+  return json.response.formats.length > 0
+    ? 'https://savesubs.com' +
+        json.response.formats
+          .filter(
+            v => v.quality === 'English (auto' || v.quality === 'English'
+          )[0]
+          .url.replace(/,/g, '')
+    : ''
+}
+
+async function getSubs(link) {
+  try {
+    const res = await fetch('https://savesubs.com/action/extract', op(link))
+    const json = await res.json()
+    const hasNoSubTitle = json.message === 'NO_LINKS'
+    hasNoSubTitle && console.log('sem legenda')
+    if (hasNoSubTitle) return { linkYoutube: link.slice(-11), subsLink: false }
+
+    // console.log({ json, link })
+    const retornar = {
+      title: json.response.title,
+      subsLink: getRep(json),
+      linkYoutube: link.slice(-11),
+    }
+    return retornar
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+let datas = []
+
+function sleep(ms) {
+  // console.log('sleep')
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+for (const [index, filme] of filmes.entries()) {
+  const data = await getSubs(filme)
+  console.log(
+    `${index + 1} / ${filmes.length} / get: ${
+      datas.filter(v => v.subsLink).length
+    }`
+  )
+  await sleep(3000)
+  data && datas.push(data)
+}
+
+console.log('finished 😀')

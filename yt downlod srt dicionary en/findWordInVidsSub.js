@@ -3,7 +3,7 @@ const path = require('path')
 const { promisify } = require('util')
 const readdir = promisify(fs.readdir)
 const parser = require('subtitles-parser')
-const videosWithSubtitle = require('./videosWithSubtitleLink.json')
+const videosWithSubtitle = require('./2videosWithSubtitleLink.json')
 const _ = require('lodash')
 
 function nameFile(str) {
@@ -11,8 +11,8 @@ function nameFile(str) {
   return str.replace(/[<>:"/\|?*]/g, ' ')
 }
 
-async function findSceneWith(dirPath, searchTerm, ignore = []) {
-  const files = (await readdir(dirPath)).filter(v =>
+async function findSceneWith(dirPath, searchTerm, ignore = [], options = {}) {
+  const files = (await readdir(path.join(__dirname, dirPath))).filter(v =>
     ignore.every(i => !v.toLowerCase().includes(i.toLowerCase()))
   )
   // const promises = files.map(file =>
@@ -24,8 +24,9 @@ async function findSceneWith(dirPath, searchTerm, ignore = []) {
   for (const file of files) {
     if (results.length > 50) break
     const result = await searchSentenceInFile(
-      path.join(dirPath, file),
-      searchTerm
+      path.join(__dirname, dirPath, file),
+      searchTerm,
+      options
     )
 
     if (result) {
@@ -43,14 +44,17 @@ async function findSceneWith(dirPath, searchTerm, ignore = []) {
   return '' //results
 }
 
-async function searchSentenceInFile(filePath, search) {
+async function readSrt(filePath) {
+  const file = await fs.readFileSync(filePath, 'utf8')
+  const parsed = parser.fromSrt(file)
+  return parsed
+}
+
+async function searchSentenceInFile(filePath, search, options) {
   const isObj = typeof search === 'object'
   const searchTerm = !isObj ? search : Object.values(search).join(' ')
 
-  const srtFile = await fs.readFileSync(filePath, 'utf8')
-  const dataSrt = parser
-    .fromSrt(srtFile, true)
-    .map(v => ({ ...v, text: v.text.replace(/\n/g, ' ') }))
+  const dataSrt = await readSrt(filePath)
 
   const srt = {
     linesHasLiteral: filter(
@@ -65,15 +69,17 @@ async function searchSentenceInFile(filePath, search) {
       }
       // v.text.endsWith(searchTerm)
     ),
-    linesHasWords: filter(dataSrt, v => {
-      return searchTerm.split(' ').every(search => {
-        if (
-          v.text.match(new RegExp('\\b' + search + '\\b', 'gi')) &&
-          !v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
-        )
-          return true
-      })
-    }),
+    linesHasWords: options.onlyLiteral
+      ? undefined
+      : filter(dataSrt, v => {
+          return searchTerm.split(' ').every(search => {
+            if (
+              v.text.match(new RegExp('\\b' + search + '\\b', 'gi')) &&
+              !v.text.match(new RegExp('\\b' + searchTerm + '\\b', 'gi'))
+            )
+              return true
+          })
+        }),
   }
 
   if (!srt.linesHasLiteral && !srt.linesHasWords) {
@@ -81,7 +87,7 @@ async function searchSentenceInFile(filePath, search) {
   }
 
   const videoSrtFromName = videosWithSubtitle.filter(v => {
-    return nameFile(v.title) === filePath.replace(/srt\\|.srt/gi, '')
+    return nameFile(v.title) === filePath.trim().match(/[^\\]*$/g)[0]
   })
 
   if (!videoSrtFromName.length) {
@@ -150,12 +156,41 @@ const rules = {
   },
 }
 
+// async function main() {
+//   const cenaSrt = await readSrt(path.join(__dirname, 'cena.srt'))
+//   cenaSrt.forEach(sentenceSrt => {
+//     // console.log(sentenceSrt.text)
+//     sentenceSrt.text = sentenceSrt.text.replace(/\n/g, ' ')
+//     const words = sentenceSrt.text.toLowerCase().match(/[a-zA-Z][’'a-zA-Z]*/gi)
+
+//     words.forEach((word, index) => {
+//       const search = `${words[index - 1] ? words[index - 1] : ''} ${word} mean`
+//       // console.log(word)
+//       findSceneWith(
+//         // './netflix srt',
+//         './meSrt',
+//         {
+//           contains: ,
+//           // contains: `no matter what is`,
+//           // endsWith: 'to?',
+//         },
+//         [],
+//         { onlyLiteral: true }
+//       )
+//     })
+//     return
+//   })
+// }
+// main()
+
 findSceneWith(
-  // './netflix srt',
-  './srt',
+  // '../netflix srt',
+  './meSrt',
   {
-    contains: `go`,
-    endsWith: 'take',
-  }
-  // ['AVENGERS', 'venom']
+    contains: 'to someone is',
+    // contains: `no matter what is`,
+    // endsWith: 'to?',
+  },
+  []
+  // { onlyLiteral: true }
 )
